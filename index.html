@@ -1,0 +1,1844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spanish 122 · Final Exam Review</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --ink: #1a1410;
+    --terracotta: #c4581a;
+    --gold: #d4a843;
+    --sage: #6b8f71;
+    --dusty-rose: #c98b80;
+    --deep: #2d1f0e;
+    --mid: #8a6f52;
+    --light: #e8dfd0;
+    --correct: #4a7c5f;
+    --wrong: #9e3a2b;
+    --glow: rgba(196,88,26,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(196,88,26,0.07) 0%, transparent 50%),
+      radial-gradient(circle at 85% 75%, rgba(107,143,113,0.08) 0%, transparent 45%),
+      radial-gradient(circle at 50% 50%, rgba(212,168,67,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 2px solid var(--terracotta);
+    z-index: 1;
+  }
+
+  .course-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 0.5rem;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    color: var(--deep);
+    line-height: 1;
+  }
+
+  header h1 span {
+    color: var(--terracotta);
+    font-style: italic;
+  }
+
+  .subtitle {
+    margin-top: 0.6rem;
+    font-size: 0.95rem;
+    color: var(--mid);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SCORE DASHBOARD ── */
+  .dashboard {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 1.5rem 2rem;
+    background: var(--deep);
+  }
+
+  .stat {
+    text-align: center;
+    color: var(--cream);
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .stat-divider {
+    width: 1px;
+    background: rgba(255,255,255,0.1);
+    align-self: stretch;
+  }
+
+  /* ── CHAPTER NAV ── */
+  .chapter-nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    border-bottom: 2px solid var(--light);
+    background: var(--cream);
+    padding: 0 1rem;
+    flex-wrap: wrap;
+  }
+
+  .ch-tab {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 1rem 1.5rem;
+    border: none;
+    background: none;
+    color: var(--mid);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+  }
+
+  .ch-tab:hover { color: var(--terracotta); }
+  .ch-tab.active {
+    color: var(--terracotta);
+    border-bottom-color: var(--terracotta);
+    font-weight: 500;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* ── CHAPTER PANEL ── */
+  .chapter-panel { display: none; }
+  .chapter-panel.active { display: block; animation: fadeUp 0.35s ease; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .chapter-intro {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--deep);
+    color: var(--cream);
+    border-left: 4px solid var(--terracotta);
+  }
+
+  .ch-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--terracotta);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .ch-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .ch-info p {
+    font-size: 0.88rem;
+    color: rgba(245,240,232,0.7);
+    margin-top: 0.3rem;
+    line-height: 1.5;
+  }
+
+  /* ── TOPIC SECTIONS ── */
+  .topic-section {
+    margin-bottom: 2rem;
+    border: 1px solid var(--light);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .topic-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.2rem;
+    background: var(--light);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .topic-header:hover { background: #ddd5c5; }
+
+  .topic-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--deep);
+    font-weight: 500;
+  }
+
+  .topic-toggle {
+    font-size: 1.1rem;
+    color: var(--terracotta);
+    transition: transform 0.25s;
+  }
+
+  .topic-body {
+    display: none;
+    padding: 1.4rem;
+    background: #fff;
+  }
+
+  .topic-body.open { display: block; }
+  .topic-toggle.open { transform: rotate(180deg); }
+
+  /* ── GRAMMAR CARD ── */
+  .grammar-card {
+    background: #fafaf7;
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  .grammar-card h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.5rem;
+  }
+
+  .conj-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.6rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+  }
+
+  .conj-table td {
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--light);
+  }
+
+  .conj-table td:first-child { color: var(--mid); }
+  .conj-table td:last-child { color: var(--deep); font-weight: 500; }
+
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+  }
+
+  .vocab-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.84rem;
+    padding: 0.35rem 0.6rem;
+    background: var(--light);
+    border-radius: 1px;
+  }
+
+  .vocab-item span:first-child { color: var(--deep); font-weight: 400; }
+  .vocab-item span:last-child { color: var(--mid); font-size: 0.8rem; }
+
+  /* ── QUIZ AREA ── */
+  .quiz-section { margin-top: 1.2rem; }
+
+  .quiz-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .quiz-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--light);
+  }
+
+  .question-card {
+    border: 1px solid var(--light);
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    background: #fdfcfa;
+    border-radius: 1px;
+    transition: border-color 0.2s;
+  }
+
+  .question-card.answered-correct { border-color: var(--correct); background: #f0f7f2; }
+  .question-card.answered-wrong { border-color: var(--wrong); background: #fdf0ef; }
+
+  .question-text {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--deep);
+    margin-bottom: 0.8rem;
+  }
+
+  .question-text strong {
+    font-family: 'DM Mono', monospace;
+    color: var(--terracotta);
+    font-size: 0.85em;
+  }
+
+  /* Multiple choice options */
+  .mc-options { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .mc-btn {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--light);
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .mc-btn:hover:not(:disabled) { background: var(--light); border-color: var(--mid); }
+  .mc-btn.correct { background: #e8f5ee; border-color: var(--correct); color: var(--correct); font-weight: 500; }
+  .mc-btn.wrong { background: #fde8e6; border-color: var(--wrong); color: var(--wrong); }
+  .mc-btn.reveal-correct { background: #e8f5ee; border-color: var(--correct); color: var(--correct); }
+  .mc-btn:disabled { cursor: default; }
+
+  .mc-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 50%;
+    background: var(--light);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+
+  .mc-btn.correct .mc-letter { background: var(--correct); color: white; }
+  .mc-btn.wrong .mc-letter { background: var(--wrong); color: white; }
+  .mc-btn.reveal-correct .mc-letter { background: var(--correct); color: white; }
+
+  /* Fill-in answers */
+  .fill-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .fill-input {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    border: 1.5px solid var(--light);
+    background: white;
+    color: var(--deep);
+    border-radius: 1px;
+    min-width: 140px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .fill-input:focus { border-color: var(--gold); }
+  .fill-input.correct { border-color: var(--correct); background: #f0f7f2; color: var(--correct); }
+  .fill-input.wrong { border-color: var(--wrong); background: #fdf0ef; color: var(--wrong); }
+
+  .check-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.45rem 1rem;
+    background: var(--deep);
+    color: var(--cream);
+    border: none;
+    cursor: pointer;
+    border-radius: 1px;
+    transition: background 0.15s;
+  }
+
+  .check-btn:hover { background: var(--terracotta); }
+
+  .feedback {
+    font-size: 0.82rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 1px;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct { background: #e8f5ee; color: var(--correct); }
+  .feedback.wrong { background: #fde8e6; color: var(--wrong); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-wrap {
+    height: 4px;
+    background: var(--light);
+    border-radius: 2px;
+    margin: 0.8rem 0;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terracotta), var(--gold));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── SECTION SCORE ── */
+  .section-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--mid);
+    text-align: right;
+    margin-top: 0.4rem;
+  }
+
+  /* ── FLASHCARD MODE ── */
+  .flashcard-wrap {
+    perspective: 1000px;
+    margin: 1rem 0;
+    cursor: pointer;
+  }
+
+  .flashcard {
+    width: 100%;
+    min-height: 140px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+  }
+
+  .flashcard.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    border: 2px solid var(--light);
+    background: white;
+    border-radius: 2px;
+    font-size: 1.05rem;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    background: var(--deep);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    border-color: var(--terracotta);
+  }
+
+  .card-hint {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.8rem;
+    font-size: 0.7rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--mid);
+    letter-spacing: 0.1em;
+  }
+
+  .flashcard-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .fc-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    padding: 0.4rem 1rem;
+    border: 1.5px solid var(--light);
+    background: none;
+    color: var(--deep);
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.15s;
+  }
+
+  .fc-btn:hover { background: var(--light); }
+  .fc-count { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--mid); }
+
+  /* ── FINAL CHALLENGE ── */
+  .final-challenge {
+    background: var(--deep);
+    color: var(--cream);
+    padding: 2rem;
+    border-left: 4px solid var(--gold);
+    margin-top: 2rem;
+  }
+
+  .final-challenge h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .challenge-text {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.85);
+    margin-bottom: 1rem;
+  }
+
+  .challenge-textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+    border-radius: 1px;
+  }
+
+  .challenge-textarea:focus { border-color: var(--gold); }
+
+  .challenge-checklist {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.4rem;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.7);
+    cursor: pointer;
+    padding: 0.3rem 0;
+  }
+
+  .check-item input[type="checkbox"] { accent-color: var(--gold); cursor: pointer; }
+  .check-item.checked { color: var(--gold); }
+
+  /* ── OVERVIEW TAB ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .overview-card {
+    border: 1px solid var(--light);
+    padding: 1.2rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .overview-card:hover { border-color: var(--terracotta); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(196,88,26,0.12); }
+
+  .ov-ch {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 0.4rem;
+  }
+
+  .ov-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--deep);
+    margin-bottom: 0.5rem;
+  }
+
+  .ov-topics {
+    font-size: 0.78rem;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  .ov-progress {
+    margin-top: 0.8rem;
+    height: 3px;
+    background: var(--light);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .ov-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--terracotta), var(--gold));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* ── TIPS PANEL ── */
+  .tips-box {
+    background: rgba(212,168,67,0.1);
+    border: 1px solid rgba(212,168,67,0.3);
+    padding: 1rem 1.2rem;
+    margin-top: 1.2rem;
+  }
+
+  .tips-box h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9a7a20;
+    margin-bottom: 0.5rem;
+  }
+
+  .tips-box ul {
+    list-style: none;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--deep);
+  }
+
+  .tips-box ul li::before { content: '→ '; color: var(--terracotta); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .conj-table { font-size: 0.75rem; }
+    .mc-btn { font-size: 0.82rem; }
+    header h1 { font-size: 2rem; }
+    .ch-number { font-size: 2.5rem; }
+    .chapter-intro { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="course-tag">SPSCC · Spanish 122 · Chapters 5–8</div>
+  <h1>Repaso <span>Final</span></h1>
+  <div class="subtitle">Interactive Review · Comprehensive Chapters 5–8</div>
+</header>
+
+<div class="dashboard">
+  <div class="stat">
+    <span class="stat-num" id="total-correct">0</span>
+    <span class="stat-label">Correct</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-num" id="total-attempted">0</span>
+    <span class="stat-label">Attempted</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-num" id="total-pct">—</span>
+    <span class="stat-label">Score</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <span class="stat-num" id="total-streak">0</span>
+    <span class="stat-label">Streak 🔥</span>
+  </div>
+</div>
+
+<nav class="chapter-nav">
+  <button class="ch-tab active" data-panel="overview">Overview</button>
+  <button class="ch-tab" data-panel="ch5">Cap. 5 · Imágenes</button>
+  <button class="ch-tab" data-panel="ch6">Cap. 6 · Viajes</button>
+  <button class="ch-tab" data-panel="ch7">Cap. 7 · Generaciones</button>
+  <button class="ch-tab" data-panel="ch8">Cap. 8 · Relaciones</button>
+</nav>
+
+<main>
+
+<!-- ═══════════════════════════════════════
+     OVERVIEW
+═══════════════════════════════════════ -->
+<div class="chapter-panel active" id="panel-overview">
+  <div class="chapter-intro">
+    <div class="ch-number">★</div>
+    <div class="ch-info">
+      <h2>Repaso Comprensivo · Final Exam Review</h2>
+      <p>Click each chapter tab above to study grammar, vocabulary, and practice with interactive quizzes. Track your score in the dashboard. Your progress updates as you answer questions.</p>
+    </div>
+  </div>
+
+  <div class="overview-grid">
+    <div class="overview-card" onclick="switchTab('ch5')">
+      <div class="ov-ch">Capítulo 5</div>
+      <div class="ov-title">Imágenes</div>
+      <div class="ov-topics">Stem-changers · Reflexive verbs · Gustar/Encantar · Tener que · Weather · Ordinals</div>
+      <div class="ov-progress"><div class="ov-progress-fill" id="prog-ch5"></div></div>
+    </div>
+    <div class="overview-card" onclick="switchTab('ch6')">
+      <div class="ov-ch">Capítulo 6</div>
+      <div class="ov-title">Viajes</div>
+      <div class="ov-topics">Regular preterite · Irregular preterite · Present progressive · ir a + inf · Relative pronouns</div>
+      <div class="ov-progress"><div class="ov-progress-fill" id="prog-ch6"></div></div>
+    </div>
+    <div class="overview-card" onclick="switchTab('ch7')">
+      <div class="ov-ch">Capítulo 7</div>
+      <div class="ov-title">Generaciones</div>
+      <div class="ov-topics">Imperfect tense · Preterite vs. Imperfect · Ya no/Todavía · Possessive pronouns · Stages of life</div>
+      <div class="ov-progress"><div class="ov-progress-fill" id="prog-ch7"></div></div>
+    </div>
+    <div class="overview-card" onclick="switchTab('ch8')">
+      <div class="ov-ch">Capítulo 8</div>
+      <div class="ov-title">Relaciones</div>
+      <div class="ov-topics">Object pronouns · Irregular preterite groups · Ser vs. Estar · Narrative markers · Feelings</div>
+      <div class="ov-progress"><div class="ov-progress-fill" id="prog-ch8"></div></div>
+    </div>
+  </div>
+
+  <div class="tips-box">
+    <h4>Exam Day Tips</h4>
+    <ul>
+      <li>Part 1 — Vocabulary (20 pts): Review all 4 vocabulary lists. Know Spanish → English AND English → Spanish.</li>
+      <li>Part 2 — Grammar (30 pts): Know all conjugation tables cold: stem-changers, reflexives, preterite (regular + irregular), imperfect (regular + ser/ir/ver).</li>
+      <li>Part 3 — Reading (20 pts): Read twice. Underline preterite verbs in one color, imperfect in another. Answer in complete sentences.</li>
+      <li>Part 4 — Writing (30 pts): Use the checklist — include imperfect, preterite, irregular preterite, object pronouns, narrative markers, emotion vocab, ya no/todavía.</li>
+      <li>Oral Assessment: Prepare a 2-min routine/preference AND a 2-min past narrative. Practice speaking to a timer.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 5
+═══════════════════════════════════════ -->
+<div class="chapter-panel" id="panel-ch5">
+  <div class="chapter-intro">
+    <div class="ch-number">5</div>
+    <div class="ch-info">
+      <h2>Imágenes del Mundo Hispano</h2>
+      <p>Stem-changing verbs · Reflexive verbs · Gustar/Encantar/Interesar · Tener que + inf. · Weather & Seasons · Ordinal Numbers · <em>Cultural focus: Panamá</em></p>
+    </div>
+  </div>
+
+  <!-- VOCABULARY FLASHCARDS -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📚 Vocabulary Flashcards — La rutina diaria</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <p style="font-size:0.85rem;color:var(--mid);margin-bottom:0.8rem;">Click each card to reveal the translation. Use the arrows to navigate.</p>
+      <div class="flashcard-wrap" id="fc-ch5" onclick="flipCard('fc-ch5')">
+        <div class="flashcard" id="fc-ch5-card">
+          <div class="card-face" id="fc-ch5-front"></div>
+          <div class="card-face card-back" id="fc-ch5-back"></div>
+        </div>
+      </div>
+      <div class="flashcard-nav">
+        <button class="fc-btn" onclick="prevCard('fc-ch5')">← Prev</button>
+        <span class="fc-count" id="fc-ch5-count">1 / 12</span>
+        <button class="fc-btn" onclick="nextCard('fc-ch5')">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEM-CHANGERS GRAMMAR -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Stem-Changing Verbs (e→ie, e→i, o→ue)</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>The "Boot" Pattern — stem changes in ALL forms EXCEPT nosotros</h4>
+        <table class="conj-table">
+          <tr><td>e→ie examples</td><td>querer, entender, preferir, empezar, pensar, sentir</td></tr>
+          <tr><td>yo/tú/él/ellos</td><td>quiero / quieres / quiere / quieren</td></tr>
+          <tr><td>nosotros</td><td>queremos (NO change)</td></tr>
+          <tr><td>e→i examples</td><td>pedir, servir, seguir, vestirse, repetir</td></tr>
+          <tr><td>yo/tú/él/ellos</td><td>pido / pides / pide / piden</td></tr>
+          <tr><td>o→ue examples</td><td>poder, dormir, volver, acostarse, almorzar</td></tr>
+          <tr><td>yo/tú/él/ellos</td><td>puedo / puedes / puede / pueden</td></tr>
+        </table>
+        <p style="margin-top:0.6rem;font-size:0.82rem;color:var(--terracotta)">⚠ Venir and tener are e→ie BUT also have irregular yo: vengo, tengo.</p>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Stem-Changers</div>
+
+        <div class="question-card" id="q-ch5-1">
+          <div class="question-text">Yo ___ (preferir) estudiar por la noche.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch5-1-inp" placeholder="conjugate..." onkeydown="if(event.key==='Enter')checkFill('q-ch5-1','prefiero')">
+            <button class="check-btn" onclick="checkFill('q-ch5-1','prefiero')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch5-1-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch5-2">
+          <div class="question-text">¿Tú ___ (poder) venir esta tarde?</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch5-2-inp" placeholder="conjugate..." onkeydown="if(event.key==='Enter')checkFill('q-ch5-2','puedes')">
+            <button class="check-btn" onclick="checkFill('q-ch5-2','puedes')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch5-2-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch5-3">
+          <div class="question-text">Nosotros ___ (dormir) ocho horas los fines de semana.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch5-3-inp" placeholder="conjugate..." onkeydown="if(event.key==='Enter')checkFill('q-ch5-3','dormimos')">
+            <button class="check-btn" onclick="checkFill('q-ch5-3','dormimos')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch5-3-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch5-4">
+          <div class="question-text">Los estudiantes ___ (empezar) el examen a las nueve.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch5-4-inp" placeholder="conjugate..." onkeydown="if(event.key==='Enter')checkFill('q-ch5-4','empiezan')">
+            <button class="check-btn" onclick="checkFill('q-ch5-4','empiezan')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch5-4-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch5-mc1">
+          <div class="question-text">Which is the correct <strong>e→i</strong> stem-changing verb?</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc1',false)"><span class="mc-letter">A</span> querer</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc1',false)"><span class="mc-letter">B</span> dormir</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc1',true)"><span class="mc-letter">C</span> pedir</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc1',false)"><span class="mc-letter">D</span> volver</button>
+          </div>
+          <div class="feedback" id="q-ch5-mc1-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REFLEXIVE VERBS -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Reflexive Verbs</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Reflexive Pronouns: me · te · se · nos · se</h4>
+        <table class="conj-table">
+          <tr><td>Structure</td><td>reflexive pronoun + conjugated verb</td></tr>
+          <tr><td>Example</td><td>Yo ME levanto a las 7. / Ella SE ducha.</td></tr>
+          <tr><td>With infinitive</td><td>Quiero levantarme = Me quiero levantar</td></tr>
+          <tr><td>despertarse (e→ie)</td><td>me despierto / te despiertas / se despierta</td></tr>
+          <tr><td>vestirse (e→i)</td><td>me visto / te vistes / se viste / nos vestimos</td></tr>
+          <tr><td>acostarse (o→ue)</td><td>me acuesto / te acuestas / se acuesta</td></tr>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Reflexive Verbs</div>
+
+        <div class="question-card" id="q-ch5-5">
+          <div class="question-text">Ella ___ (ducharse) antes de ir al trabajo.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch5-5-inp" placeholder="pronoun + verb..." onkeydown="if(event.key==='Enter')checkFill('q-ch5-5','se ducha')">
+            <button class="check-btn" onclick="checkFill('q-ch5-5','se ducha')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch5-5-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch5-6">
+          <div class="question-text">Los niños ___ (vestirse) solos por la mañana.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch5-6-inp" placeholder="pronoun + verb..." onkeydown="if(event.key==='Enter')checkFill('q-ch5-6','se visten')">
+            <button class="check-btn" onclick="checkFill('q-ch5-6','se visten')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch5-6-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch5-mc2">
+          <div class="question-text">Which sentence uses a reflexive verb <strong>correctly</strong>?</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc2',false)"><span class="mc-letter">A</span> Yo me levanta temprano.</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc2',true)"><span class="mc-letter">B</span> Nosotros nos acostamos tarde.</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc2',false)"><span class="mc-letter">C</span> Ella te ducha por la mañana.</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc2',false)"><span class="mc-letter">D</span> Él se levantamos a las 6.</button>
+          </div>
+          <div class="feedback" id="q-ch5-mc2-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUSTAR / WEATHER / ORDINALS -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Gustar/Encantar · Tener que · Weather · Ordinals</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Gustar / Encantar / Interesar</h4>
+        <table class="conj-table">
+          <tr><td>singular noun/inf</td><td>Me encanta la música. / Te gusta bailar.</td></tr>
+          <tr><td>plural noun</td><td>Me encantan los idiomas. / Les gustan los viajes.</td></tr>
+          <tr><td>someone else</td><td>A ella le interesa la política.</td></tr>
+          <tr><td>Tener que + inf</td><td>Tengo que estudiar. / Tiene que llegar a tiempo.</td></tr>
+        </table>
+      </div>
+
+      <div class="vocab-grid" style="margin-bottom:1rem">
+        <div class="vocab-item"><span>Hace sol/calor/frío</span><span>sunny/hot/cold</span></div>
+        <div class="vocab-item"><span>Está nublado</span><span>It's cloudy</span></div>
+        <div class="vocab-item"><span>Llueve/Nieva</span><span>It rains/snows</span></div>
+        <div class="vocab-item"><span>Hay niebla</span><span>It's foggy</span></div>
+        <div class="vocab-item"><span>primero/segundo</span><span>first/second</span></div>
+        <div class="vocab-item"><span>tercero/cuarto</span><span>third/fourth</span></div>
+        <div class="vocab-item"><span>quinto/sexto</span><span>fifth/sixth</span></div>
+        <div class="vocab-item"><span>séptimo/décimo</span><span>seventh/tenth</span></div>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz</div>
+
+        <div class="question-card" id="q-ch5-7">
+          <div class="question-text">A mí ___ (encantar) las películas de terror.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch5-7-inp" placeholder="pronoun + verb..." onkeydown="if(event.key==='Enter')checkFill('q-ch5-7','me encantan')">
+            <button class="check-btn" onclick="checkFill('q-ch5-7','me encantan')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch5-7-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch5-8">
+          <div class="question-text">Enero es el ___ mes del año. (ordinal)</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch5-8-inp" placeholder="ordinal number..." onkeydown="if(event.key==='Enter')checkFill('q-ch5-8','primer,primero')">
+            <button class="check-btn" onclick="checkFill('q-ch5-8','primer,primero')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch5-8-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch5-mc3">
+          <div class="question-text">Which weather expression fits? "En Minnesota en enero: ___"</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc3',false)"><span class="mc-letter">A</span> Hace mucho calor y hay sol.</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc3',true)"><span class="mc-letter">B</span> Hace frío y nieva mucho.</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc3',false)"><span class="mc-letter">C</span> Está despejado y húmedo.</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch5-mc3',false)"><span class="mc-letter">D</span> Llueve y hace calor.</button>
+          </div>
+          <div class="feedback" id="q-ch5-mc3-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 6
+═══════════════════════════════════════ -->
+<div class="chapter-panel" id="panel-ch6">
+  <div class="chapter-intro">
+    <div class="ch-number">6</div>
+    <div class="ch-info">
+      <h2>Viajes</h2>
+      <p>Regular preterite (-ar/-er/-ir) · Irregular preterite (hacer/ir/ser) · Present progressive · ir a + infinitive · Relative pronouns (que/donde/quien) · Connectors · <em>Cultural focus: El Caribe y sus piratas</em></p>
+    </div>
+  </div>
+
+  <!-- TRAVEL VOCAB -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📚 Vocabulary — Los viajes y el alojamiento</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="vocab-grid">
+        <div class="vocab-item"><span>el vuelo</span><span>flight</span></div>
+        <div class="vocab-item"><span>el aeropuerto</span><span>airport</span></div>
+        <div class="vocab-item"><span>la maleta</span><span>suitcase</span></div>
+        <div class="vocab-item"><span>el pasaporte</span><span>passport</span></div>
+        <div class="vocab-item"><span>hacer las maletas</span><span>to pack</span></div>
+        <div class="vocab-item"><span>facturar el equipaje</span><span>to check luggage</span></div>
+        <div class="vocab-item"><span>pasar por la aduana</span><span>to go through customs</span></div>
+        <div class="vocab-item"><span>hacer escala</span><span>to have a layover</span></div>
+        <div class="vocab-item"><span>alojarse</span><span>to stay (at)</span></div>
+        <div class="vocab-item"><span>recorrer</span><span>to tour/travel through</span></div>
+        <div class="vocab-item"><span>el hostal</span><span>guesthouse/hostel</span></div>
+        <div class="vocab-item"><span>el destino</span><span>destination</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULAR PRETERITE -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Regular Preterite</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Regular Preterite Endings — completed past actions</h4>
+        <table class="conj-table">
+          <tr><td></td><td>-AR (hablar)</td><td>-ER (comer)</td><td>-IR (vivir)</td></tr>
+          <tr><td>yo</td><td>hablé</td><td>comí</td><td>viví</td></tr>
+          <tr><td>tú</td><td>hablaste</td><td>comiste</td><td>viviste</td></tr>
+          <tr><td>él/ella</td><td>habló</td><td>comió</td><td>vivió</td></tr>
+          <tr><td>nosotros</td><td>hablamos</td><td>comimos</td><td>vivimos</td></tr>
+          <tr><td>ellos/Uds.</td><td>hablaron</td><td>comieron</td><td>vivieron</td></tr>
+        </table>
+        <p style="margin-top:0.6rem;font-size:0.82rem;color:var(--mid)">Key trigger words: ayer, anteayer, la semana pasada, el año pasado, hace dos días, por primera vez</p>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Regular Preterite</div>
+
+        <div class="question-card" id="q-ch6-1">
+          <div class="question-text">Ayer yo ___ (viajar) en tren por primera vez.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch6-1-inp" placeholder="preterite..." onkeydown="if(event.key==='Enter')checkFill('q-ch6-1','viajé')">
+            <button class="check-btn" onclick="checkFill('q-ch6-1','viajé')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch6-1-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch6-2">
+          <div class="question-text">Los turistas ___ (recorrer) la ciudad a pie todo el día.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch6-2-inp" placeholder="preterite..." onkeydown="if(event.key==='Enter')checkFill('q-ch6-2','recorrieron')">
+            <button class="check-btn" onclick="checkFill('q-ch6-2','recorrieron')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch6-2-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch6-3">
+          <div class="question-text">Nosotros ___ (llegar) al aeropuerto con dos horas de anticipación.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch6-3-inp" placeholder="preterite..." onkeydown="if(event.key==='Enter')checkFill('q-ch6-3','llegamos')">
+            <button class="check-btn" onclick="checkFill('q-ch6-3','llegamos')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch6-3-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IRREGULAR PRETERITE -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Irregular Preterite: hacer / ir / ser</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Irregular Preterite — memorize these!</h4>
+        <table class="conj-table">
+          <tr><td></td><td>HACER</td><td>IR / SER (identical!)</td></tr>
+          <tr><td>yo</td><td>hice</td><td>fui</td></tr>
+          <tr><td>tú</td><td>hiciste</td><td>fuiste</td></tr>
+          <tr><td>él/ella</td><td>hizo (z!)</td><td>fue</td></tr>
+          <tr><td>nosotros</td><td>hicimos</td><td>fuimos</td></tr>
+          <tr><td>ellos/Uds.</td><td>hicieron</td><td>fueron</td></tr>
+        </table>
+        <p style="margin-top:0.6rem;font-size:0.82rem;color:var(--terracotta)">⚠ IR and SER share the same forms. Context tells you which is meant: "Fui al mercado" (IR) vs. "Fue increíble" (SER).</p>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Irregular Preterite</div>
+
+        <div class="question-card" id="q-ch6-4">
+          <div class="question-text">El año pasado yo ___ (hacer) un viaje increíble a Perú.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch6-4-inp" placeholder="preterite..." onkeydown="if(event.key==='Enter')checkFill('q-ch6-4','hice')">
+            <button class="check-btn" onclick="checkFill('q-ch6-4','hice')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch6-4-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch6-5">
+          <div class="question-text">¿Adónde ___ (ir, tú) en las últimas vacaciones?</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch6-5-inp" placeholder="preterite..." onkeydown="if(event.key==='Enter')checkFill('q-ch6-5','fuiste')">
+            <button class="check-btn" onclick="checkFill('q-ch6-5','fuiste')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch6-5-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch6-mc1">
+          <div class="question-text">Which connector of <strong>consequence</strong> fits? "El hotel estaba completo, ___ buscamos un hostal."</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch6-mc1',false)"><span class="mc-letter">A</span> porque</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch6-mc1',false)"><span class="mc-letter">B</span> como</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch6-mc1',true)"><span class="mc-letter">C</span> por eso</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch6-mc1',false)"><span class="mc-letter">D</span> aunque</button>
+          </div>
+          <div class="feedback" id="q-ch6-mc1-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESSIVE / IR A / RELATIVE PRONOUNS -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Present Progressive · ir a + inf · Relative Pronouns</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Present Progressive — actions in progress RIGHT NOW</h4>
+        <table class="conj-table">
+          <tr><td>-ar → -ando</td><td>hablar → hablando, viajar → viajando</td></tr>
+          <tr><td>-er/-ir → -iendo</td><td>comer → comiendo, vivir → viviendo</td></tr>
+          <tr><td>Stem-change participle</td><td>dormir → durmiendo, pedir → pidiendo</td></tr>
+          <tr><td>y-change</td><td>leer → leyendo, traer → trayendo</td></tr>
+          <tr><td>ir a + inf</td><td>Voy a viajar. / ¿Vas a facturar el equipaje?</td></tr>
+          <tr><td>que</td><td>El hotel que reservé era perfecto. (thing/person)</td></tr>
+          <tr><td>donde</td><td>La ciudad donde nací. (place)</td></tr>
+          <tr><td>quien</td><td>La guía con quien viajé. (person after prep)</td></tr>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz</div>
+
+        <div class="question-card" id="q-ch6-6">
+          <div class="question-text">Ana / hacer las maletas → Ana ___ (present progressive)</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch6-6-inp" placeholder="está + participle..." onkeydown="if(event.key==='Enter')checkFill('q-ch6-6','está haciendo las maletas')">
+            <button class="check-btn" onclick="checkFill('q-ch6-6','está haciendo las maletas')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch6-6-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch6-mc2">
+          <div class="question-text">"La ciudad ___ vivimos tiene un mercado colonial." Which relative pronoun?</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch6-mc2',false)"><span class="mc-letter">A</span> que</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch6-mc2',true)"><span class="mc-letter">B</span> donde</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch6-mc2',false)"><span class="mc-letter">C</span> quien</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch6-mc2',false)"><span class="mc-letter">D</span> cual</button>
+          </div>
+          <div class="feedback" id="q-ch6-mc2-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 7
+═══════════════════════════════════════ -->
+<div class="chapter-panel" id="panel-ch7">
+  <div class="chapter-intro">
+    <div class="ch-number">7</div>
+    <div class="ch-info">
+      <h2>Generaciones</h2>
+      <p>Imperfect tense (regular + irregular) · Preterite vs. Imperfect · Ya no / Todavía · Possessive adjectives & pronouns · Stages of life · <em>Cultural focus: La Revolución Mexicana / Juan Gelman</em></p>
+    </div>
+  </div>
+
+  <!-- STAGES OF LIFE VOCAB -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📚 Vocabulary — Las etapas de la vida</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="vocab-grid">
+        <div class="vocab-item"><span>la infancia/niñez</span><span>childhood</span></div>
+        <div class="vocab-item"><span>la adolescencia</span><span>adolescence</span></div>
+        <div class="vocab-item"><span>la juventud</span><span>youth</span></div>
+        <div class="vocab-item"><span>la madurez</span><span>adulthood</span></div>
+        <div class="vocab-item"><span>la vejez</span><span>old age</span></div>
+        <div class="vocab-item"><span>nacer</span><span>to be born</span></div>
+        <div class="vocab-item"><span>crecer</span><span>to grow up</span></div>
+        <div class="vocab-item"><span>casarse</span><span>to get married</span></div>
+        <div class="vocab-item"><span>jubilarse</span><span>to retire</span></div>
+        <div class="vocab-item"><span>fallecer</span><span>to pass away</span></div>
+        <div class="vocab-item"><span>la herencia cultural</span><span>cultural heritage</span></div>
+        <div class="vocab-item"><span>el recuerdo</span><span>memory/souvenir</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMPERFECT -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — The Imperfect Tense</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Regular Imperfect Endings</h4>
+        <table class="conj-table">
+          <tr><td></td><td>-AR (hablar)</td><td>-ER/-IR (comer/vivir)</td></tr>
+          <tr><td>yo</td><td>hablaba</td><td>comía / vivía</td></tr>
+          <tr><td>tú</td><td>hablabas</td><td>comías / vivías</td></tr>
+          <tr><td>él/ella</td><td>hablaba</td><td>comía / vivía</td></tr>
+          <tr><td>nosotros</td><td>hablábamos</td><td>comíamos / vivíamos</td></tr>
+          <tr><td>ellos/Uds.</td><td>hablaban</td><td>comían / vivían</td></tr>
+        </table>
+        <p style="margin-top:0.6rem;font-size:0.82rem;color:var(--terracotta)">⚠ Only 3 IRREGULAR verbs in the imperfect:</p>
+        <table class="conj-table" style="margin-top:0.4rem">
+          <tr><td>SER</td><td>era / eras / era / éramos / eran</td></tr>
+          <tr><td>IR</td><td>iba / ibas / iba / íbamos / iban</td></tr>
+          <tr><td>VER</td><td>veía / veías / veía / veíamos / veían</td></tr>
+        </table>
+      </div>
+
+      <div class="grammar-card">
+        <h4>KEY USES of the Imperfect</h4>
+        <table class="conj-table">
+          <tr><td>Habitual/repeated</td><td>Cuando era niño, siempre jugaba en el parque.</td></tr>
+          <tr><td>Ongoing state</td><td>Mi abuela tenía el pelo largo y hablaba tres idiomas.</td></tr>
+          <tr><td>Background/scene</td><td>Llovía y hacía frío cuando llegamos.</td></tr>
+          <tr><td>Time/age in past</td><td>Era las 3 de la tarde. Tenía 10 años.</td></tr>
+        </table>
+        <p style="margin-top:0.5rem;font-size:0.82rem;color:var(--mid)">Trigger words: siempre, todos los días, de niño/a, antes, generalmente, cada año</p>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Imperfect</div>
+
+        <div class="question-card" id="q-ch7-1">
+          <div class="question-text">Mi abuela siempre ___ (cocinar) tamales los domingos.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch7-1-inp" placeholder="imperfect..." onkeydown="if(event.key==='Enter')checkFill('q-ch7-1','cocinaba')">
+            <button class="check-btn" onclick="checkFill('q-ch7-1','cocinaba')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch7-1-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch7-2">
+          <div class="question-text">Nosotros ___ (ver) ese programa de TV todos los viernes.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch7-2-inp" placeholder="imperfect irregular..." onkeydown="if(event.key==='Enter')checkFill('q-ch7-2','veíamos')">
+            <button class="check-btn" onclick="checkFill('q-ch7-2','veíamos')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch7-2-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch7-3">
+          <div class="question-text">Mi familia y yo ___ (ir) a la playa cada verano.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch7-3-inp" placeholder="imperfect irregular..." onkeydown="if(event.key==='Enter')checkFill('q-ch7-3','íbamos')">
+            <button class="check-btn" onclick="checkFill('q-ch7-3','íbamos')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch7-3-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRET VS IMP -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Preterite vs. Imperfect · Ya no / Todavía</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Preterite vs. Imperfect — "Movie Scene" Analogy</h4>
+        <table class="conj-table">
+          <tr><td>Preterite = plot events</td><td>De repente, empezó a llover. / Se casó en 1998.</td></tr>
+          <tr><td>Imperfect = background</td><td>Hacía frío y el cielo estaba nublado.</td></tr>
+          <tr><td>Together</td><td>Llovía (IMP) cuando llegamos (PRET) a la reunión.</td></tr>
+          <tr><td>Ya no + present</td><td>Antes vivía con mis padres. Ya no vivo con ellos.</td></tr>
+          <tr><td>Todavía + present</td><td>Mi abuelo todavía trabaja aunque tiene 75 años.</td></tr>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Preterite vs. Imperfect</div>
+
+        <div class="question-card" id="q-ch7-mc1">
+          <div class="question-text">"De niño/a, yo siempre ___ con mis abuelos los domingos." Preterite or Imperfect?</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc1',false)"><span class="mc-letter">A</span> comí (preterite) — it's a completed event</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc1',true)"><span class="mc-letter">B</span> comía (imperfect) — habitual childhood action</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc1',false)"><span class="mc-letter">C</span> como (present) — ongoing habit</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc1',false)"><span class="mc-letter">D</span> comer (infinitive)</button>
+          </div>
+          <div class="feedback" id="q-ch7-mc1-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch7-mc2">
+          <div class="question-text">"El año pasado mi abuelo ___ después de 40 años trabajando." Which tense?</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc2',true)"><span class="mc-letter">A</span> se jubiló (preterite) — specific past event</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc2',false)"><span class="mc-letter">B</span> se jubilaba (imperfect) — habitual action</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc2',false)"><span class="mc-letter">C</span> se jubila (present)</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc2',false)"><span class="mc-letter">D</span> se ha jubilado (present perfect)</button>
+          </div>
+          <div class="feedback" id="q-ch7-mc2-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch7-4">
+          <div class="question-text">De adolescente escuchaba mucho rock. ___ (todavía/ya no) lo escucho, pero también me gusta el jazz. (he still listens)</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch7-4-inp" placeholder="ya no or todavía..." onkeydown="if(event.key==='Enter')checkFill('q-ch7-4','todavía')">
+            <button class="check-btn" onclick="checkFill('q-ch7-4','todavía')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch7-4-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POSSESSIVES -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Possessive Adjectives & Pronouns (long form)</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Long-Form Possessives — agree with the THING possessed</h4>
+        <table class="conj-table">
+          <tr><td>mío/a/os/as</td><td>mine — Un amigo mío. / Esta taza es mía.</td></tr>
+          <tr><td>tuyo/a/os/as</td><td>yours — ¿Cuál es el tuyo?</td></tr>
+          <tr><td>suyo/a/os/as</td><td>his/hers/theirs — Las fotos son suyas.</td></tr>
+          <tr><td>nuestro/a/os/as</td><td>ours — La bicicleta nuestra.</td></tr>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Possessives</div>
+
+        <div class="question-card" id="q-ch7-mc3">
+          <div class="question-text">"Las fotos antiguas son ___ — son de su infancia." (his)</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc3',false)"><span class="mc-letter">A</span> suyo</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc3',false)"><span class="mc-letter">B</span> suyos</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc3',true)"><span class="mc-letter">C</span> suyas</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch7-mc3',false)"><span class="mc-letter">D</span> su</button>
+          </div>
+          <div class="feedback" id="q-ch7-mc3-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════
+     CHAPTER 8
+═══════════════════════════════════════ -->
+<div class="chapter-panel" id="panel-ch8">
+  <div class="chapter-intro">
+    <div class="ch-number">8</div>
+    <div class="ch-info">
+      <h2>Relaciones</h2>
+      <p>Direct & indirect object pronouns · Double object pronouns · Irregular preterite (u-stem/i-stem) · Ser vs. Estar advanced · Narrative markers · Feelings vocabulary · <em>Cultural focus: México y el Surrealismo / Fernando Llort</em></p>
+    </div>
+  </div>
+
+  <!-- FEELINGS VOCAB -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📚 Vocabulary — Sentimientos y relaciones</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="vocab-grid">
+        <div class="vocab-item"><span>alegre / feliz</span><span>happy</span></div>
+        <div class="vocab-item"><span>triste / deprimido/a</span><span>sad / depressed</span></div>
+        <div class="vocab-item"><span>enojado/a</span><span>angry</span></div>
+        <div class="vocab-item"><span>asustado/a</span><span>scared</span></div>
+        <div class="vocab-item"><span>avergonzado/a</span><span>embarrassed</span></div>
+        <div class="vocab-item"><span>sorprendido/a</span><span>surprised</span></div>
+        <div class="vocab-item"><span>nervioso/a</span><span>nervous</span></div>
+        <div class="vocab-item"><span>emocionado/a</span><span>excited/moved</span></div>
+        <div class="vocab-item"><span>decepcionado/a</span><span>disappointed</span></div>
+        <div class="vocab-item"><span>orgulloso/a</span><span>proud</span></div>
+        <div class="vocab-item"><span>celoso/a</span><span>jealous</span></div>
+        <div class="vocab-item"><span>enamorado/a (de)</span><span>in love (with)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJECT PRONOUNS -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Object Pronouns (DOP + IOP)</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Direct Object Pronouns (DOPs) — answers WHAT? or WHOM?</h4>
+        <table class="conj-table">
+          <tr><td>me</td><td>te</td><td>lo / la</td><td>nos</td><td>los / las</td></tr>
+        </table>
+        <p style="margin-top:0.5rem">¿Ves la película? → Sí, <strong>la</strong> veo. / Quiero leer<strong>lo</strong> esta noche.</p>
+      </div>
+      <div class="grammar-card">
+        <h4>Indirect Object Pronouns (IOPs) — answers TO/FOR WHOM?</h4>
+        <table class="conj-table">
+          <tr><td>me</td><td>te</td><td>le</td><td>nos</td><td>les</td></tr>
+        </table>
+        <p style="margin-top:0.5rem"><strong>Le</strong> presté mi libro a Elena. / ¿Me puedes explicar la gramática?</p>
+      </div>
+      <div class="grammar-card">
+        <h4>Double Object Pronouns — IOP always comes FIRST</h4>
+        <table class="conj-table">
+          <tr><td>Rule</td><td>le/les + lo/la/los/las → se + lo/la/los/las</td></tr>
+          <tr><td>Example</td><td>Le di el libro → Se lo di.</td></tr>
+          <tr><td>Example</td><td>Les mandó las fotos → Se las mandó.</td></tr>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Object Pronouns</div>
+
+        <div class="question-card" id="q-ch8-1">
+          <div class="question-text">¿Ves la película? → Sí, ___ veo. (replace with DOP)</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch8-1-inp" placeholder="DOP..." onkeydown="if(event.key==='Enter')checkFill('q-ch8-1','la')">
+            <button class="check-btn" onclick="checkFill('q-ch8-1','la')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch8-1-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch8-2">
+          <div class="question-text">Ella le mandó las fotos a su madre → Ella ___ mandó. (double pronoun)</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch8-2-inp" placeholder="se + DOP..." onkeydown="if(event.key==='Enter')checkFill('q-ch8-2','se las')">
+            <button class="check-btn" onclick="checkFill('q-ch8-2','se las')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch8-2-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch8-mc1">
+          <div class="question-text">"Necesitamos los documentos para mañana." Replace the direct object.</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc1',false)"><span class="mc-letter">A</span> Le necesitamos para mañana.</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc1',false)"><span class="mc-letter">B</span> Lo necesitamos para mañana.</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc1',true)"><span class="mc-letter">C</span> Los necesitamos para mañana.</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc1',false)"><span class="mc-letter">D</span> Las necesitamos para mañana.</button>
+          </div>
+          <div class="feedback" id="q-ch8-mc1-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IRREGULAR PRETERITE U/I STEMS -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Irregular Preterite: U-stem & I-stem Groups</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>U-stem Group: -uve/-uviste/-uvo/-uvimos/-uvieron</h4>
+        <table class="conj-table">
+          <tr><td>estar</td><td>estuve / estuviste / estuvo</td></tr>
+          <tr><td>tener</td><td>tuve / tuviste / tuvo</td></tr>
+          <tr><td>poder</td><td>pude / pudiste / pudo</td></tr>
+          <tr><td>poner</td><td>puse / pusiste / puso</td></tr>
+          <tr><td>saber</td><td>supe / supiste / supo</td></tr>
+        </table>
+        <h4 style="margin-top:0.7rem">I-stem Group</h4>
+        <table class="conj-table">
+          <tr><td>querer</td><td>quise / quisiste / quiso</td></tr>
+          <tr><td>venir</td><td>vine / viniste / vino</td></tr>
+          <tr><td>decir (j-stem)</td><td>dije / dijiste / dijo / dijeron (not -ieron!)</td></tr>
+          <tr><td>traer (j-stem)</td><td>traje / trajiste / trajo / trajeron</td></tr>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Irregular Preterite Groups</div>
+
+        <div class="question-card" id="q-ch8-3">
+          <div class="question-text">Ayer yo no ___ (poder) dormir — estaba nervioso/a.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch8-3-inp" placeholder="preterite..." onkeydown="if(event.key==='Enter')checkFill('q-ch8-3','pude')">
+            <button class="check-btn" onclick="checkFill('q-ch8-3','pude')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch8-3-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch8-4">
+          <div class="question-text">¿Qué ___ (decir, tú) cuando supiste la noticia?</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch8-4-inp" placeholder="preterite..." onkeydown="if(event.key==='Enter')checkFill('q-ch8-4','dijiste')">
+            <button class="check-btn" onclick="checkFill('q-ch8-4','dijiste')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch8-4-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch8-5">
+          <div class="question-text">Nosotros ___ (estar) en la fiesta hasta las dos de la mañana.</div>
+          <div class="fill-row">
+            <input class="fill-input" id="q-ch8-5-inp" placeholder="preterite..." onkeydown="if(event.key==='Enter')checkFill('q-ch8-5','estuvimos')">
+            <button class="check-btn" onclick="checkFill('q-ch8-5','estuvimos')">Check</button>
+          </div>
+          <div class="feedback" id="q-ch8-5-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SER VS ESTAR -->
+  <div class="topic-section">
+    <div class="topic-header" onclick="toggleTopic(this)">
+      <span class="topic-title">📖 Grammar — Ser vs. Estar · Narrative Markers</span>
+      <span class="topic-toggle">▾</span>
+    </div>
+    <div class="topic-body">
+      <div class="grammar-card">
+        <h4>Ser vs. Estar — Meaning-Changing Adjectives</h4>
+        <table class="conj-table">
+          <tr><td>Es aburrido</td><td>He is boring (trait)</td></tr>
+          <tr><td>Está aburrido</td><td>He is bored (right now)</td></tr>
+          <tr><td>Es listo</td><td>He is clever (trait)</td></tr>
+          <tr><td>Está listo</td><td>He is ready (now)</td></tr>
+          <tr><td>Es malo</td><td>He is bad/evil (trait)</td></tr>
+          <tr><td>Está malo</td><td>He is sick (condition)</td></tr>
+          <tr><td>Es rica</td><td>She is wealthy (trait)</td></tr>
+          <tr><td>Está rica</td><td>It is delicious (quality)</td></tr>
+        </table>
+      </div>
+      <div class="grammar-card">
+        <h4>Narrative Markers</h4>
+        <table class="conj-table">
+          <tr><td>To begin</td><td>Había una vez… / Un día… / Primero…</td></tr>
+          <tr><td>To continue</td><td>Luego… / Después… / Más tarde…</td></tr>
+          <tr><td>Sudden turn</td><td>De repente… / De pronto… / En ese momento…</td></tr>
+          <tr><td>To conclude</td><td>Al final… / Finalmente… / Por último…</td></tr>
+        </table>
+      </div>
+
+      <div class="quiz-section">
+        <div class="quiz-label">Practice Quiz · Ser vs. Estar</div>
+
+        <div class="question-card" id="q-ch8-mc2">
+          <div class="question-text">"Esta sopa ___ riquísima." (delicious right now)</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc2',false)"><span class="mc-letter">A</span> es</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc2',true)"><span class="mc-letter">B</span> está</button>
+          </div>
+          <div class="feedback" id="q-ch8-mc2-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch8-mc3">
+          <div class="question-text">"Mi jefe ___ muy aburrido en las reuniones." (boring as a trait)</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc3',true)"><span class="mc-letter">A</span> es</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc3',false)"><span class="mc-letter">B</span> está</button>
+          </div>
+          <div class="feedback" id="q-ch8-mc3-fb"></div>
+        </div>
+
+        <div class="question-card" id="q-ch8-mc4">
+          <div class="question-text">Which narrative marker signals a sudden, unexpected turn of events?</div>
+          <div class="mc-options">
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc4',false)"><span class="mc-letter">A</span> Primero</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc4',false)"><span class="mc-letter">B</span> Al final</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc4',true)"><span class="mc-letter">C</span> De repente</button>
+            <button class="mc-btn" onclick="checkMC(this,'q-ch8-mc4',false)"><span class="mc-letter">D</span> Luego</button>
+          </div>
+          <div class="feedback" id="q-ch8-mc4-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL INTEGRATED CHALLENGE -->
+  <div class="final-challenge">
+    <h3>✍ Final Writing Challenge — Repaso Comprensivo</h3>
+    <p class="challenge-text">Write a 140–170 word paragraph telling a story about a meaningful moment involving another person. Use as many structures from the checklist as you can. Practice here before the exam!</p>
+    <textarea class="challenge-textarea" placeholder="Escribe tu párrafo aquí... (Write your paragraph here...)"></textarea>
+    <div style="margin-top:0.8rem;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold)">Checklist — check off each structure as you include it:</div>
+    <div class="challenge-checklist">
+      <label class="check-item"><input type="checkbox"> Imperfect (background/habitual)</label>
+      <label class="check-item"><input type="checkbox"> Preterite (completed event)</label>
+      <label class="check-item"><input type="checkbox"> Irregular preterite (poder, decir, estar…)</label>
+      <label class="check-item"><input type="checkbox"> Direct object pronoun (lo/la/los/las)</label>
+      <label class="check-item"><input type="checkbox"> Indirect object pronoun (me/te/le/nos/les)</label>
+      <label class="check-item"><input type="checkbox"> Feeling / emotion vocabulary</label>
+      <label class="check-item"><input type="checkbox"> Narrative marker (de repente, luego…)</label>
+      <label class="check-item"><input type="checkbox"> Ser vs. estar contrast</label>
+      <label class="check-item"><input type="checkbox"> Ya no or todavía</label>
+      <label class="check-item"><input type="checkbox"> Relative pronoun (que, donde, or quien)</label>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ── FLASHCARD DATA ──
+const flashcards = {
+  'fc-ch5': [
+    ['despertarse (e→ie)', 'to wake up'],
+    ['levantarse', 'to get up'],
+    ['ducharse', 'to shower'],
+    ['vestirse (e→i)', 'to get dressed'],
+    ['peinarse', 'to comb/style hair'],
+    ['cepillarse los dientes', 'to brush teeth'],
+    ['acostarse (o→ue)', 'to go to bed'],
+    ['dormirse (o→ue)', 'to fall asleep'],
+    ['afeitarse', 'to shave'],
+    ['maquillarse', 'to put on makeup'],
+    ['desayunar', 'to have breakfast'],
+    ['bañarse', 'to take a bath'],
+  ]
+};
+
+const fcIndex = {};
+
+function initFlashcard(id) {
+  fcIndex[id] = 0;
+  renderCard(id);
+}
+
+function renderCard(id) {
+  const cards = flashcards[id];
+  const i = fcIndex[id];
+  const card = document.getElementById(id + '-card');
+  if (card) card.classList.remove('flipped');
+  document.getElementById(id + '-front').textContent = cards[i][0];
+  document.getElementById(id + '-back').textContent = cards[i][1];
+  document.getElementById(id + '-count').textContent = (i + 1) + ' / ' + cards.length;
+}
+
+function flipCard(id) {
+  document.getElementById(id + '-card').classList.toggle('flipped');
+}
+
+function nextCard(id) {
+  const cards = flashcards[id];
+  fcIndex[id] = (fcIndex[id] + 1) % cards.length;
+  renderCard(id);
+}
+
+function prevCard(id) {
+  const cards = flashcards[id];
+  fcIndex[id] = (fcIndex[id] - 1 + cards.length) % cards.length;
+  renderCard(id);
+}
+
+initFlashcard('fc-ch5');
+
+// ── SCORE TRACKING ──
+let totalCorrect = 0, totalAttempted = 0, streak = 0;
+const chapterScores = { ch5: [0,0], ch6: [0,0], ch7: [0,0], ch8: [0,0] };
+
+function getChapterFromId(qid) {
+  if (qid.startsWith('q-ch5')) return 'ch5';
+  if (qid.startsWith('q-ch6')) return 'ch6';
+  if (qid.startsWith('q-ch7')) return 'ch7';
+  if (qid.startsWith('q-ch8')) return 'ch8';
+  return null;
+}
+
+function recordAnswer(qid, correct) {
+  totalAttempted++;
+  const ch = getChapterFromId(qid);
+  if (ch) chapterScores[ch][1]++;
+  if (correct) {
+    totalCorrect++;
+    streak++;
+    if (ch) chapterScores[ch][0]++;
+  } else {
+    streak = 0;
+  }
+  updateDashboard();
+  updateProgressBars();
+}
+
+function updateDashboard() {
+  document.getElementById('total-correct').textContent = totalCorrect;
+  document.getElementById('total-attempted').textContent = totalAttempted;
+  const pct = totalAttempted > 0 ? Math.round(totalCorrect / totalAttempted * 100) + '%' : '—';
+  document.getElementById('total-pct').textContent = pct;
+  document.getElementById('total-streak').textContent = streak;
+}
+
+function updateProgressBars() {
+  ['ch5','ch6','ch7','ch8'].forEach(ch => {
+    const [c, t] = chapterScores[ch];
+    const pct = t > 0 ? (c / t * 100) : 0;
+    const el = document.getElementById('prog-' + ch);
+    if (el) el.style.width = pct + '%';
+  });
+}
+
+// ── FILL-IN CHECK ──
+function checkFill(qid, correctAnswers) {
+  const inp = document.getElementById(qid + '-inp');
+  const fb = document.getElementById(qid + '-fb');
+  const card = document.getElementById(qid);
+  if (!inp || inp.disabled) return;
+
+  const answers = correctAnswers.split(',').map(a => a.trim().toLowerCase());
+  const userAnswer = inp.value.trim().toLowerCase()
+    .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u');
+  const normalizedAnswers = answers.map(a =>
+    a.replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u')
+  );
+
+  const correct = normalizedAnswers.includes(userAnswer);
+  inp.disabled = true;
+  inp.classList.add(correct ? 'correct' : 'wrong');
+  card.classList.add(correct ? 'answered-correct' : 'answered-wrong');
+
+  fb.className = 'feedback show ' + (correct ? 'correct' : 'wrong');
+  fb.textContent = correct
+    ? '✓ Correcto!'
+    : '✗ La respuesta correcta es: ' + answers[0];
+
+  recordAnswer(qid, correct);
+}
+
+// ── MULTIPLE CHOICE CHECK ──
+function checkMC(btn, qid, isCorrect) {
+  const card = document.getElementById(qid);
+  const allBtns = card.querySelectorAll('.mc-btn');
+  const fb = document.getElementById(qid + '-fb');
+  if (allBtns[0].disabled) return;
+
+  allBtns.forEach(b => {
+    b.disabled = true;
+    const onclick = b.getAttribute('onclick');
+    if (onclick && onclick.includes('true')) {
+      b.classList.add('reveal-correct');
+    }
+  });
+
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  card.classList.add(isCorrect ? 'answered-correct' : 'answered-wrong');
+
+  fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+  fb.textContent = isCorrect ? '✓ ¡Correcto!' : '✗ Not quite — the correct answer is highlighted in green.';
+
+  recordAnswer(qid, isCorrect);
+}
+
+// ── TOPIC TOGGLE ──
+function toggleTopic(header) {
+  const body = header.nextElementSibling;
+  const toggle = header.querySelector('.topic-toggle');
+  body.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+// ── TAB SWITCHING ──
+function switchTab(panelId) {
+  document.querySelectorAll('.ch-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.chapter-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[data-panel="${panelId}"]`).classList.add('active');
+  document.getElementById('panel-' + panelId).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.ch-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchTab(tab.dataset.panel));
+});
+
+// ── CHECKLIST ITEMS ──
+document.querySelectorAll('.check-item input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener('change', function() {
+    this.closest('.check-item').classList.toggle('checked', this.checked);
+  });
+});
+</script>
+</body>
+</html>
